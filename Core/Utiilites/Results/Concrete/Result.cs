@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Core.Utilities.Results.Concrete
 {
-    public class Result : IResult
+    public class Result : Abstract.IResult
     {
 
         public Result(bool success, string message) : this(success)
