@@ -12,11 +12,12 @@ namespace DataAccess.Concrete.EntityFramework
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MeetingCase;Trusted_Connection=true");
+            //optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MeetingCase;Trusted_Connection=true");
+            optionsBuilder.UseSqlServer(@"Server=localhost;Database=MeetingCase;User Id=sa;Password=123456Aa.;TrustServerCertificate=True;");
         }
         public DbSet<User> Users { get; set; }
-        //public DbSet<OperationClaim> OperationClaims { get; set; }
-        //public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
+        public DbSet<OperationClaim> OperationClaims { get; set; }
+        public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
 
     }
 }
