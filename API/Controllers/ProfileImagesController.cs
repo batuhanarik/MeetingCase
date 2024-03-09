@@ -48,16 +48,16 @@ namespace API.Controllers
             return BadRequest(result);
         }
 
-        //[HttpPost("AddMultiple")]
-        //public IActionResult Add([FromForm] IFormFile[] images, [FromForm] int weddingPlaceId)
-        //{
-        //    var result = _profileImageService.AddMultiple(images, new WeddingPlaceImage { WeddingPlaceId = weddingPlaceId });
-        //    if (result.Success)
-        //    {
-        //        return Ok(result);
-        //    }
-        //    return BadRequest(result);
-        //}
+        [HttpPost("add")]
+        public IActionResult Add([FromForm] IFormFile file, [FromForm] ProfileImage profileImage)
+        {
+            var result = _profileImageService.Add(file,profileImage);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
 
 
 

@@ -14,7 +14,7 @@ namespace Business.Abstract
         IDataResult<List<ProfileImage>> GetAll();
         IDataResult<ProfileImage> GetById(int id);
         IDataResult<ProfileImage> GetImageByUserId(int userId);
-        IResult Add(ProfileImage profileImage, IFormFile file);
+        IResult Add(IFormFile file,ProfileImage profileImage);
         IResult Delete(ProfileImage profileImage);
         IResult DeleteByUserId(int userId);
         IResult Update(ProfileImage profileImage, IFormFile file);

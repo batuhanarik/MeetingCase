@@ -41,9 +41,13 @@ public class Program
         });
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         builder.Services.AddSingleton<IUserService, UserManager>();
+        builder.Services.AddSingleton<IUserDal, EfUserDal>();
+
         builder.Services.AddSingleton<IAuthService, AuthManager>();
         builder.Services.AddSingleton<ITokenHelper, JwtHelper>();
-        builder.Services.AddSingleton<IUserDal, EfUserDal>();
+
+        builder.Services.AddSingleton<IProfileImageDal, EfProfileImageDal>();
+        builder.Services.AddSingleton<IProfileImageService, ProfileImageManager>();
 
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>

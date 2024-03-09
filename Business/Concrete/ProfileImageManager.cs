@@ -25,7 +25,7 @@ namespace Business.Concrete
             _profileImageDal = profileImageDal;
         }
 
-        public IResult Add(ProfileImage profileImage, IFormFile file)
+        public IResult Add(IFormFile file,ProfileImage profileImage)
         {
             //var result = BusinessRules.Run(CheckIfImageLimitExceeded(wpImage.WeddingPlaceId));
             //if (result != null)
