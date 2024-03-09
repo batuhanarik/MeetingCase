@@ -17,13 +17,25 @@ namespace Business.DependencyResolvers.Autofac
 {
     public class AutofacBusinessModule : Module
     {
+       
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<UserManager>().As<IUserService>();
-            builder.RegisterType<EfUserDal>().As<IUserDal>();
 
             builder.RegisterType<AuthManager>().As<IAuthService>();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();
+
+            builder.RegisterType<UserManager>().As<IUserService>();
+            builder.RegisterType<EfUserDal>().As<IUserDal>();
+
+            builder.RegisterType<ProfileImageManager>().As<IProfileImageService>();
+            builder.RegisterType<EfProfileImageDal>().As<IProfileImageDal>();
+
+
+            builder.RegisterType<MeetingManager>().As<IMeetingService>();
+            builder.RegisterType<EfMeetingDal>().As<IMeetingDal>();
+
+            builder.RegisterType<MailManager>().As<IMailService>();
+
 
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();

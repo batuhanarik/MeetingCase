@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using DataAccess.Abstract;
@@ -20,6 +21,7 @@ namespace Business.Concrete
             _meetingDal = meetingDal;
         }
 
+        [SecuredOperation("superadmin,admin,product_manager")]
         public IResult Add(Meeting meeting)
         {
             _meetingDal.Add(meeting);

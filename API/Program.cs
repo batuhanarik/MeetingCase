@@ -1,5 +1,5 @@
-using Autofac.Extensions.DependencyInjection;
 using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Business.DependencyResolvers.Autofac;
 using Core.DependencyResolvers;
 using Core.Extensions;
@@ -27,7 +27,7 @@ public class Program
 
 
         builder.Services.AddControllers();
-
+        ServiceTool.Create(builder.Services);
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
@@ -39,20 +39,25 @@ public class Program
                 x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
             });
         });
+
+
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        builder.Services.AddSingleton<IUserService, UserManager>();
-        builder.Services.AddSingleton<IUserDal, EfUserDal>();
 
-        builder.Services.AddSingleton<IAuthService, AuthManager>();
-        builder.Services.AddSingleton<ITokenHelper, JwtHelper>();
+        builder.Host.UseServiceProviderFactory(services => new AutofacServiceProviderFactory())
+                       .ConfigureContainer<ContainerBuilder>(builder => { builder.RegisterModule(new AutofacBusinessModule()); });
+        //builder.Services.AddSingleton<IUserService, UserManager>();
+        //builder.Services.AddSingleton<IUserDal, EfUserDal>();
 
-        builder.Services.AddSingleton<IProfileImageDal, EfProfileImageDal>();
-        builder.Services.AddSingleton<IProfileImageService, ProfileImageManager>();
+        //builder.Services.AddSingleton<IAuthService, AuthManager>();
+        //builder.Services.AddSingleton<ITokenHelper, JwtHelper>();
 
-        builder.Services.AddSingleton<IMailService, MailManager>();
+        //builder.Services.AddSingleton<IProfileImageDal, EfProfileImageDal>();
+        //builder.Services.AddSingleton<IProfileImageService, ProfileImageManager>();
 
-        builder.Services.AddSingleton<IMeetingDal, EfMeetingDal>();
-        builder.Services.AddSingleton<IMeetingService, MeetingManager>();
+        //builder.Services.AddSingleton<IMailService, MailManager>();
+
+        //builder.Services.AddSingleton<IMeetingDal, EfMeetingDal>();
+        //builder.Services.AddSingleton<IMeetingService, MeetingManager>();
 
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
@@ -68,7 +73,12 @@ public class Program
                     IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
                 };
             });
+
+
+
         builder.Services.AddDependencyResolvers(new ICoreModule[] { new CoreModule() });
+
+
         var app = builder.Build();
 
         //builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
@@ -82,13 +92,17 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+        app.ConfigureCustomExceptionMiddleware();
+
+        app.UseStaticFiles();
+
         app.UseHttpsRedirection();
         app.UseCors();
 
-        app.UseAuthorization();
         app.UseAuthentication();
-        app.MapControllers();
+        app.UseAuthorization();
 
+        app.MapControllers();
         app.Run();
     }
 

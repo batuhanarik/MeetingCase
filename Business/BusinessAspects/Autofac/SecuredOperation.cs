@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Core.Utiilites.IoC;
+using FluentValidation;
 
 
 namespace Business.BusinessAspects.Autofac
@@ -31,7 +32,7 @@ namespace Business.BusinessAspects.Autofac
                     return;
                 }
             }
-            throw new Exception("Authorization Denied");
+            throw new ValidationException("Authorization Denied");
         }
     }
 }
