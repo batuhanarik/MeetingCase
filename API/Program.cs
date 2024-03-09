@@ -49,6 +49,8 @@ public class Program
         builder.Services.AddSingleton<IProfileImageDal, EfProfileImageDal>();
         builder.Services.AddSingleton<IProfileImageService, ProfileImageManager>();
 
+        builder.Services.AddSingleton<IMailService, MailManager>();
+
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {

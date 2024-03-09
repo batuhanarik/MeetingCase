@@ -10,10 +10,12 @@ namespace API.Controllers
     public class AuthController : Controller
     {
         private IAuthService _authService;
+        private IMailService _mailService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, IMailService mailService)
         {
             _authService = authService;
+            _mailService = mailService;
         }
 
         [HttpPost("login")]
@@ -47,6 +49,7 @@ namespace API.Controllers
             var result = _authService.CreateAccessToken(registerResult.Data);
             if (result.Success)
             {
+                _mailService.SendWelcomeMail(registerResult.Data.Email);
                 return Ok(registerResult);
             }
 
