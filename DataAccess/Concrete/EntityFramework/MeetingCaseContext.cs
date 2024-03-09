@@ -16,6 +16,7 @@ namespace DataAccess.Concrete.EntityFramework
             optionsBuilder.UseSqlServer(@"Server=localhost;Database=MeetingCase;User Id=sa;Password=123456Aa.;TrustServerCertificate=True;");
         }
         public DbSet<User> Users { get; set; }
+        public DbSet<Meeting> Meetings { get; set; }
         public DbSet<ProfileImage> ProfileImages { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }

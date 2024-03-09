@@ -51,6 +51,9 @@ public class Program
 
         builder.Services.AddSingleton<IMailService, MailManager>();
 
+        builder.Services.AddSingleton<IMeetingDal, EfMeetingDal>();
+        builder.Services.AddSingleton<IMeetingService, MeetingManager>();
+
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
