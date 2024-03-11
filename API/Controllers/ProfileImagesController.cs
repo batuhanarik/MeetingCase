@@ -12,9 +12,9 @@ namespace API.Controllers
         //IoC --> Inversion of Control
         private IProfileImageService _profileImageService;
 
-        public ProfileImagesController(IProfileImageService weddingPlaceImageService)
+        public ProfileImagesController(IProfileImageService profileImageService)
         {
-            _profileImageService = weddingPlaceImageService;
+            _profileImageService = profileImageService;
         }
 
         [HttpGet("getall")]

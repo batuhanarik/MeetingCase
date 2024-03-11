@@ -32,7 +32,6 @@ namespace Business.Concrete
         [SecuredOperation("superadmin,admin,product_manager")]
         public IResult Delete(Meeting meeting)
         {
-            //_meetingDal.DeleteByWeddingPlaceId(meeting.Id);
             _meetingDal.Delete(meeting);
             return new SuccessResult("The meeting has been deleted.");
         }

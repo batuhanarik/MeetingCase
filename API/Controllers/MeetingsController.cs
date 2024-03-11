@@ -49,18 +49,7 @@ namespace API.Controllers
             return BadRequest(result.Message);
         }
 
-        /* 
-        [HttpGet("getdetailbyid")]
-        public IActionResult GetDetailById(int wpId)
-        {
-            var result = _meetingService.GetWeddingPlaceDetail(wpId);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result.Message);
-        }
-        */
+  
         [HttpPost("add")]
         public IActionResult Add(Meeting meeting)
         {
