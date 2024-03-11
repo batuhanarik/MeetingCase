@@ -39,7 +39,7 @@ namespace Business.Concrete
                 PasswordSalt = passwordSalt,
             };
             _userService.Add(user);
-            return new SuccessDataResult<User>(user, "Başarıyla Kayıt Olundu");
+            return new SuccessDataResult<User>(user, "Registered Successfully");
         }
 
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
@@ -47,22 +47,22 @@ namespace Business.Concrete
             var userToCheck = _userService.GetByMail(userForLoginDto.Email).Data;
             if (userToCheck == null)
             {
-                return new ErrorDataResult<User>(userToCheck,"Kullanıcı Bulunamadı!");
+                return new ErrorDataResult<User>(userToCheck,"User Not Found!");
             }
 
             if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.PasswordHash, userToCheck.PasswordSalt))
             {
-                return new ErrorDataResult<User>("Şifre Hatalı!");
+                return new ErrorDataResult<User>("Wrong Password!");
             }
 
-            return new SuccessDataResult<User>(userToCheck, "Başarıyla Giriş Yapıldı");
+            return new SuccessDataResult<User>(userToCheck, "Login Successfully");
         }
 
         public IResult UserExists(string email)
         {
             if (_userService.GetByMail(email).Data != null)
             {
-                return new ErrorResult("Kullanıcı Zaten Mevcut");
+                return new ErrorResult("User Already Exist");
             }
             return new SuccessResult();
         }
