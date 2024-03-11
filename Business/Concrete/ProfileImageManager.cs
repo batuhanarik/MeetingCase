@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Core.Utiilites.Helpers;
 using Core.Utilities.Results.Abstract;
@@ -27,15 +28,10 @@ namespace Business.Concrete
 
         public IResult Add(IFormFile file,ProfileImage profileImage)
         {
-            //var result = BusinessRules.Run(CheckIfImageLimitExceeded(wpImage.WeddingPlaceId));
-            //if (result != null)
-            //{
-            //    return result;
-            //}
-            string imageName = string.Format(@"{0}.jpg", Guid.NewGuid());
-            profileImage.ImagePath = Paths.ProfileImagePath + imageName;
+            //string imageName = string.Format(@"{0}.jpg", Guid.NewGuid());
+            profileImage.ImagePath = FileHelper.Add(file);
             profileImage.Date = DateTime.Now;
-            FileHelper.Write(file, Paths.ProfileImagePath);
+
             _profileImageDal.Add(profileImage);
             return new SuccessResult("Profile Image Added");
         }
@@ -51,6 +47,7 @@ namespace Business.Concrete
             return new SuccessResult("Profile Photo Deleted");
         }
 
+        [SecuredOperation("superadmin,admin")]
         public IResult DeleteByUserId(int userId)
         {
             var result = GetImageByUserId(userId);

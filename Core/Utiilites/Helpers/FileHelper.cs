@@ -9,37 +9,55 @@ namespace Core.Utiilites.Helpers
 {
     public static class FileHelper
     {
-        public static void Write(IFormFile file, string directory, string fileName)
-        {
-            if (!Directory.Exists(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
+        static string _basePath = Directory.GetCurrentDirectory() + "/wwwroot/";
+        static string _imageFolder = "images/";
+        static string _fullPath = _basePath + _imageFolder;
 
-            using (Stream fileStream = new FileStream(directory + "\\" + fileName, FileMode.Create, FileAccess.Write))
+        public static string Add(IFormFile file)
+        {
+            CreateDirectory(_fullPath);
+
+            var fileExtension = Path.GetExtension(file.FileName);
+            CheckImage(fileExtension);
+
+            var imagePath = _imageFolder + Guid.NewGuid().ToString() + fileExtension;
+
+            CreateFile(file, _basePath + imagePath);
+
+            return imagePath;
+        }
+
+        public static void Delete(string filePath)
+        {
+            File.Delete(_basePath + filePath);
+        }
+
+        public static string Update(IFormFile file, string oldFilePath)
+        {
+            Delete(oldFilePath);
+            return Add(file);
+        }
+
+        private static void CheckImage(string extension)
+        {
+            var extensions = new List<string> { ".jpg", ".png", "jpeg" };
+
+            //if (!extensions.Contains(extension))
+                //throw new FileHelperCustomException(Messages.UnsupportedFileType);
+                
+        }
+
+        private static void CreateDirectory(string path)
+        {
+            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+        }
+
+        private static void CreateFile(IFormFile file, string path)
+        {
+            using (FileStream fileStream = File.Create(path))
             {
                 file.CopyTo(fileStream);
-            }
-        }
-
-        public static void Write(IFormFile file, string fullPath)
-        {
-            string directory = Path.GetDirectoryName(fullPath);
-            string fileName = Path.GetFileName(fullPath);
-            Write(file, directory, fileName);
-        }
-
-
-        public static void Delete(string path)
-        {
-            File.Delete(path);
-        }
-
-        public static Stream GetFileStream(string path)
-        {
-            using (Stream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
-            {
-                return fileStream;
+                fileStream.Flush();
             }
         }
     }

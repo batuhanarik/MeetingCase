@@ -34,9 +34,9 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddCors(opts =>
         {
-            opts.AddDefaultPolicy(x =>
+            opts.AddPolicy("AllowAnyOrigin",builder =>
             {
-                x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
             });
         });
 
@@ -45,19 +45,6 @@ public class Program
 
         builder.Host.UseServiceProviderFactory(services => new AutofacServiceProviderFactory())
                        .ConfigureContainer<ContainerBuilder>(builder => { builder.RegisterModule(new AutofacBusinessModule()); });
-        //builder.Services.AddSingleton<IUserService, UserManager>();
-        //builder.Services.AddSingleton<IUserDal, EfUserDal>();
-
-        //builder.Services.AddSingleton<IAuthService, AuthManager>();
-        //builder.Services.AddSingleton<ITokenHelper, JwtHelper>();
-
-        //builder.Services.AddSingleton<IProfileImageDal, EfProfileImageDal>();
-        //builder.Services.AddSingleton<IProfileImageService, ProfileImageManager>();
-
-        //builder.Services.AddSingleton<IMailService, MailManager>();
-
-        //builder.Services.AddSingleton<IMeetingDal, EfMeetingDal>();
-        //builder.Services.AddSingleton<IMeetingService, MeetingManager>();
 
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
@@ -80,6 +67,7 @@ public class Program
 
 
         var app = builder.Build();
+        app.UseStaticFiles();
 
         //builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
         //{
@@ -87,17 +75,18 @@ public class Program
         //});
 
         // Configure the HTTP request pipeline.
+
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+        app.UseCors("AllowAnyOrigin");
+
         app.ConfigureCustomExceptionMiddleware();
 
-        app.UseStaticFiles();
 
         app.UseHttpsRedirection();
-        app.UseCors();
 
         app.UseAuthentication();
         app.UseAuthorization();

@@ -34,6 +34,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<MeetingManager>().As<IMeetingService>();
             builder.RegisterType<EfMeetingDal>().As<IMeetingDal>();
 
+            builder.RegisterType<MeetingDocumentManager>().As<IMeetingDocumentService>();
+            builder.RegisterType<EfMeetingDocumentDal>().As<IMeetingDocumentDal>();
+
             builder.RegisterType<MailManager>().As<IMailService>();
 
 

@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Core.Entities.Concrete;
+using Entities.Concrete.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +20,36 @@ namespace API.Controllers
         public IActionResult GetAll()
         {
             var result = _userService.GetAll();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+        [HttpGet("get")]
+        public IActionResult Get(int id)
+        {
+            var result = _userService.GetById(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+        [HttpGet("getallemails")]
+        public IActionResult GetAllEmails()
+        {
+            var result = _userService.GetAllEmails();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+        [HttpGet("getuserdetail")]
+        public IActionResult GetUserDetail(int id)
+        {
+            var result = _userService.GetUserDetail(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -49,7 +80,7 @@ namespace API.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update(User user)
+        public IActionResult Update(UserUpdateDto user)
         {
             var result = _userService.Update(user);
             if (result.Success)

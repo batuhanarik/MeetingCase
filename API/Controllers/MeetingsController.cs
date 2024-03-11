@@ -27,16 +27,16 @@ namespace API.Controllers
             }
             return BadRequest(result.Message);
         }
-        //[HttpGet("getdetails")]
-        //public IActionResult GetDetails()
-        //{
-        //    var result = _meetingService.GetWeddingPlaceDetails();
-        //    if (result.Success)
-        //    {
-        //        return Ok(result);
-        //    }
-        //    return BadRequest(result);
-        //}
+        [HttpGet("getmeetingdetails")]
+        public IActionResult GetMeetingDetails()
+        {
+            var result = _meetingService.GetMeetingDetails();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
 
         [HttpGet("getbyid")]
         public IActionResult GetById(int id)

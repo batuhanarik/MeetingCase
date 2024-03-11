@@ -3,6 +3,7 @@ using Core.Utiilites.IoC;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
 using Core.Utiilites.Security.JWT;
+using Microsoft.Extensions.Configuration;
 
 namespace Core.DependencyResolvers
 {
@@ -11,16 +12,9 @@ namespace Core.DependencyResolvers
         public void Load(IServiceCollection serviceCollection)
         {
             serviceCollection.AddMemoryCache();
-            //serviceCollection.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             serviceCollection.AddSingleton<Stopwatch>();
+            //serviceCollection.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-
-
-            //builder.RegisterType<UserManager>().As<IUserService>();
-            //builder.RegisterType<EfUserDal>().As<IUserDal>();
-
-            //builder.RegisterType<AuthManager>().As<IAuthService>();
-            //builder.RegisterType<JwtHelper>().As<ITokenHelper>();
         }
     }
 }

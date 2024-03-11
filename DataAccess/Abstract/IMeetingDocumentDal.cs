@@ -1,6 +1,5 @@
 ﻿using Core.DataAccess;
 using Entities.Concrete;
-using Entities.Concrete.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Abstract
 {
-    public interface IMeetingDal : IEntityRepository<Meeting>
+    public interface IMeetingDocumentDal : IEntityRepository<MeetingDocument>
     {
-        List<MeetingDetailDto> GetMeetingDetails();
     }
 }

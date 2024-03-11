@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Entities.Concrete.DTOs;
+using Business.BusinessAspects.Autofac;
 
 namespace Business.Concrete
 {
@@ -26,6 +28,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("superadmin")]
         public IResult Delete(User user)
         {
             _userDal.Delete(user);
@@ -49,15 +52,36 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(result);
         }
 
+        public IDataResult<List<string>> GetAllEmails()
+        {   
+            List<string> emails = new List<string>();
+            var result = _userDal.GetAll();
+            foreach (var user in result)
+            {
+                emails.Add(user.Email);
+            }
+            return new SuccessDataResult<List<string>>(emails);
+        }
+
         public IDataResult<List<OperationClaim>> GetClaims(User user)
         {
             return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user));
         }
 
-        public IResult Update(User user)
+        public IResult Update(UserUpdateDto user)
         {
-            _userDal.Update(user);
-            return new SuccessResult();
+            var userToUpdate = GetByMail(user.Email).Data;
+            
+            userToUpdate.FirstName = user.FirstName;
+            userToUpdate.LastName = user.LastName;
+            _userDal.Update(userToUpdate);
+            return new SuccessResult("Profile Informations Updated.");
+        }
+
+        public IDataResult<UserDetailDTO> GetUserDetail(int id)
+        {
+            var result = _userDal.GetUserDetail(id);
+            return new SuccessDataResult<UserDetailDTO>(result);
         }
     }
 }

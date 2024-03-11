@@ -47,7 +47,7 @@ namespace Business.Concrete
             var userToCheck = _userService.GetByMail(userForLoginDto.Email).Data;
             if (userToCheck == null)
             {
-                return new ErrorDataResult<User>("Kullanıcı Bulunamadı!");
+                return new ErrorDataResult<User>(userToCheck,"Kullanıcı Bulunamadı!");
             }
 
             if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.PasswordHash, userToCheck.PasswordSalt))

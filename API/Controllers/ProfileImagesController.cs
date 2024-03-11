@@ -49,9 +49,9 @@ namespace API.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add([FromForm] IFormFile file, [FromForm] ProfileImage profileImage)
+        public IActionResult Add([FromForm] IFormFile file, [FromForm] int userId)
         {
-            var result = _profileImageService.Add(file,profileImage);
+            var result = _profileImageService.Add(file,new ProfileImage { UserId=userId});
             if (result.Success)
             {
                 return Ok(result);
@@ -64,8 +64,8 @@ namespace API.Controllers
         [HttpPost("update")]
         public IActionResult Update([FromForm(Name = ("ProfileImage"))] IFormFile file, [FromForm(Name = ("Id"))] int id)
         {
-            var carImage = _profileImageService.GetById(id).Data;
-            var result = _profileImageService.Update(carImage, file);
+            var profileImage = _profileImageService.GetById(id).Data;
+            var result = _profileImageService.Update(profileImage, file);
             if (result.Success)
             {
                 return Ok(result);

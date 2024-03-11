@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,7 @@ namespace Core.Extensions
             }
             catch (Exception e)
             {
+                httpContext.Response.StatusCode = 403;
                 await HandleExceptionAsync(httpContext, e);
             }
         }
@@ -34,7 +36,7 @@ namespace Core.Extensions
         private async Task HandleExceptionAsync(HttpContext httpContext, Exception e)
         {
             httpContext.Response.ContentType = "application/json";
-            httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            httpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
 
             string message = "Internal Server Error";
             IEnumerable<ValidationFailure> errors;
@@ -43,15 +45,14 @@ namespace Core.Extensions
             {
                 message = validationException.Message;
                 errors = validationException.Errors;
-                httpContext.Response.StatusCode = 400;
+                httpContext.Response.StatusCode = 403;
 
                 await httpContext.Response.WriteAsync(new ValidationErrorDetails
                 {
-                    StatusCode = 400,
+                    StatusCode = 403,
                     Message = message,
                 }.ToString());
-
-                return; // Uygulamayı durdurma, fonksiyonu burada sonlandır
+                return;
             }
 
             await httpContext.Response.WriteAsync(new ErrorDetails
