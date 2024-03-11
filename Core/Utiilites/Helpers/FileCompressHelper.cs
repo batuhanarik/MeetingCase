@@ -20,7 +20,7 @@ namespace Core.Utiilites.Helpers
             {
                 foreach (var file in files)
                 {
-                    var entry = zipArchive.CreateEntry(file.FileName);
+                    var entry = zipArchive.CreateEntry(file.FileName,CompressionLevel.Optimal);
 
                     using (var entryStream = entry.Open())
                     using (var documentStream = file.OpenReadStream())

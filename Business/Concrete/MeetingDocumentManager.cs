@@ -39,36 +39,51 @@ namespace Business.Concrete
         [SecuredOperation("superadmin,admin,product_manager")]
         public IResult Delete(MeetingDocument meetingDocument)
         {
-            throw new NotImplementedException();
+            _meetingDocumentDal.Delete(meetingDocument);
+            return new SuccessResult("Document Deleted!");
+
         }
 
         [SecuredOperation("superadmin,admin,product_manager")]
         public IResult DeleteByMeetingId(int meetingId)
         {
-            throw new NotImplementedException();
+            var result = _meetingDocumentDal.Get(x => x.MeetingId == meetingId);
+            _meetingDocumentDal.Delete(result);
+            return new SuccessResult("Document Deleted!");
         }
 
         public IDataResult<List<MeetingDocument>> GetAll()
         {
-            throw new NotImplementedException();
+            var result = this._meetingDocumentDal.GetAll();
+            return new SuccessDataResult<List<MeetingDocument>>(result, "Listed Meeting Documents");
+
         }
 
         public IDataResult<MeetingDocument> GetById(int id)
         {
-            throw new NotImplementedException();
+            var result = _meetingDocumentDal.Get(x => x.Id == id);
+            return new SuccessDataResult<MeetingDocument>(result, "Get Meet Document");
         }
 
+        
+        [SecuredOperation("superadmin,admin,product_manager")]
         public IDataResult<MeetingDocument> GetDocumentByMeetingId(int meetingId)
         {
             var result = _meetingDocumentDal.Get(x=> x.MeetingId == meetingId);
 
-            return new SuccessDataResult<MeetingDocument>(result,"Listed Meeting Documents");
+            return new SuccessDataResult<MeetingDocument>(result,"Get Meet Document");
         }
 
         [SecuredOperation("superadmin,admin,product_manager")]
         public IResult Update(MeetingDocument meetingDocument, IFormFile[] files)
         {
-            throw new NotImplementedException();
+
+            var zipFilePath = DocumentHelper.CompressDocuments(files);
+            meetingDocument.DocumentPath = zipFilePath;
+            meetingDocument.Date = DateTime.Now;
+
+            _meetingDocumentDal.Update(meetingDocument);
+            return new SuccessResult("Meeting Documents Updated");
         }
     }
 }

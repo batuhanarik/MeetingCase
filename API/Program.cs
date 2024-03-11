@@ -34,7 +34,7 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddCors(opts =>
         {
-            opts.AddPolicy("AllowAnyOrigin",builder =>
+            opts.AddDefaultPolicy(builder =>
             {
                 builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
             });
@@ -67,6 +67,7 @@ public class Program
 
 
         var app = builder.Build();
+        app.UseCors();
         app.UseStaticFiles();
 
         //builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
@@ -81,7 +82,6 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-        app.UseCors("AllowAnyOrigin");
 
         app.ConfigureCustomExceptionMiddleware();
 

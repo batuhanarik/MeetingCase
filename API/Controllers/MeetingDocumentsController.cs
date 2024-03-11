@@ -60,24 +60,21 @@ namespace API.Controllers
         }
 
         [HttpGet("download")]
-        public IActionResult Download(int id)
+        public string Download(int id)
         {
             var result = _meetingDocumentService.GetDocumentByMeetingId(id);
-            string zipPath;
             if (result.Success)
             {
-                zipPath = result.Data.DocumentPath;
                 if(result.Data.DocumentPath != null)
                 {
-                    return Ok(zipPath);
-
+                    return result.Data.DocumentPath;
                 }
                 else
                 {
-                    return BadRequest(result);
+                    return "";
                 }
             }
-            return BadRequest(result);
+            return "";
         }
 
 
